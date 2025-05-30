@@ -120,7 +120,7 @@ closeSuccessModalButtons.forEach(button => {
 
 // Manejar el envío del formulario (¡REAL AHORA CON GAS!)
 // **IMPORTANTE:** Reemplaza la URL con la de tu Web App de Google Apps Script
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWFz0Bca9HPz622ZO0XrEKNso6Ynu_HWk32wwwRA58VyV_tx8yBI-5HqHzAgg0r1ly/exec";
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxL_R9TR4DnuA0PNbscjL__YDzZSvH5TyW-lwpt-UTLFN-0jT31Ar1wWHpb-2j-WQzK/exec";
 
 rsvpForm.addEventListener('submit', function(e) {
     e.preventDefault();
