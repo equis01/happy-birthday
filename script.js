@@ -41,6 +41,8 @@ function activatePage() {
         musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>'; // Icono de silencio
         musicToggle.classList.remove('playing');
         isPlaying = false;
+        // Opcional: mostrar un mensaje al usuario si la música no se reproduce automáticamente
+        // alert('Haz clic en el icono de música para activar la banda sonora mágica.');
     });
 
     // Eliminar el event listener una vez que la página ha sido activada
@@ -72,6 +74,7 @@ const rsvpModal = document.getElementById('rsvpModal');
 const openRsvpFormBtn = document.getElementById('openRsvpForm');
 const closeRsvpModalButton = document.querySelector('.close-rsvp-modal');
 const rsvpForm = document.getElementById('rsvpForm');
+const submitButton = rsvpForm.querySelector('.submit-button'); // Nuevo: Seleccionar el botón de envío
 
 // Modal de error de capacidad
 const capacityErrorModal = document.getElementById('capacityErrorModal');
@@ -120,7 +123,7 @@ closeSuccessModalButtons.forEach(button => {
 
 // Manejar el envío del formulario (¡REAL AHORA CON GAS!)
 // **IMPORTANTE:** Reemplaza la URL con la de tu Web App de Google Apps Script
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxL_R9TR4DnuA0PNbscjL__YDzZSvH5TyW-lwpt-UTLFN-0jT31Ar1wWHpb-2j-WQzK/exec";
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWFz0Bca9HPz622ZO0XrEKNso6Ynu_HWk32wwwRA58VyV_tx8yBI-5HqHzAgg0r1ly/exec"; // Usando la URL que proporcionaste
 
 rsvpForm.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -133,10 +136,15 @@ rsvpForm.addEventListener('submit', function(e) {
         return; // Detiene el envío del formulario
     }
 
-    // Preparar los datos del formulario
+    // --- BLOQUEO DEL BOTÓN DE ENVÍO ---
+    submitButton.disabled = true; // Deshabilita el botón
+    submitButton.textContent = 'Enviando...'; // Cambia el texto del botón
+    submitButton.style.cursor = 'not-allowed'; // Cambia el cursor para indicar que no es interactivo
+    // Puedes añadir un spinner si quieres un feedback más visual:
+    // submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...'; 
+
     const formData = new FormData(rsvpForm);
     
-    // Realizar el envío usando Fetch API al script GAS
     fetch(GAS_WEB_APP_URL, {
         method: 'POST',
         body: formData // Envía los datos del formulario directamente
@@ -156,6 +164,12 @@ rsvpForm.addEventListener('submit', function(e) {
     .catch(error => {
         console.error('Error al enviar el formulario (fetch):', error);
         alert('Hubo un error de conexión. Por favor, revisa tu conexión a internet o intenta más tarde.');
+    })
+    .finally(() => {
+        // --- RESTAURAR EL BOTÓN DE ENVÍO ---
+        submitButton.disabled = false; // Habilita el botón de nuevo
+        submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Confirmación'; // Restaura el texto y el icono
+        submitButton.style.cursor = 'pointer'; // Restaura el cursor
     });
 });
 
@@ -164,12 +178,13 @@ rsvpForm.addEventListener('submit', function(e) {
 const eventLocationElement = document.getElementById('eventLocation');
 const eventAddressElement = document.querySelector('.location-address');
 
-const address = "Calle de la Torre 123, Ciudad Mágica"; // La dirección real
+const address = "Salón de Eventos El Reino Encantado, Calle de la Torre 123, Ciudad Mágica"; // La dirección real de la ubicación
 
 function openMapLink() {
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); // Detección más robusta
     const encodedAddress = encodeURIComponent(address);
-    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`; // API de Google Maps más moderna
+    // Google Maps URL para desktop y móvil, que se adapta
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
     const wazeUrl = `https://waze.com/ul?q=${encodedAddress}&navigate=yes`;
 
     if (isMobile) {
@@ -191,17 +206,17 @@ eventAddressElement.addEventListener('click', openMapLink);
 
 // Funcionalidad para añadir al calendario (al hacer clic en Fecha y HORA)
 const eventDateElement = document.getElementById('eventDate');
-const eventTimeElement = document.getElementById('eventTime');
+const eventTimeElement = document.getElementById('eventTime'); // Nuevo ID para la hora
 
 const eventTitle = "Cumpleaños de Iris Sofía";
 const eventDescription = "Acompáñanos a celebrar los 3 años de Iris Sofía, estilo Rapunzel. ¡Será mágico!";
-const eventLocationText = "Salón de Eventos El Reino Encantado, Calle de la Torre 123, Ciudad Mágica";
+const eventLocationText = "Salón de Eventos El Reino Encantado, Calle de la Torre 123, Ciudad Mágica"; // Usar el texto de la ubicación
 
 // Fecha y hora del evento
 // Formato de fecha y hora ISO 8601 para compatibilidad
 // La fecha es 12 de noviembre de 2025 a las 3:00 PM
 const startTime = new Date("2025-11-12T15:00:00");
-const endTime = new Date(startTime.getTime() + (3 * 60 * 60 * 1000)); // Duración de 3 horas
+const endTime = new Date(startTime.getTime() + (3 * 60 * 60 * 1000)); // Duración de 3 horas (ajusta si es necesario)
 
 const startDate = startTime.toISOString().replace(/-|:|\.\d{3}/g, '');
 const endDate = endTime.toISOString().replace(/-|:|\.\d{3}/g, '');
