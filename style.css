@@ -119,6 +119,7 @@ body {
 }
 
 /* Posiciones y retrasos para cada linterna adicional */
+/* Se ajustan para 20 linternas, manteniendo la distribución */
 .lantern:nth-child(2) { top: 80%; left: 5%; animation-delay: 0s; }
 .lantern:nth-child(3) { top: 70%; right: 10%; animation-delay: 1.5s; }
 .lantern:nth-child(4) { top: 60%; left: 20%; animation-delay: 3s; }

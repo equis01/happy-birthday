@@ -74,7 +74,8 @@ const rsvpModal = document.getElementById('rsvpModal');
 const openRsvpFormBtn = document.getElementById('openRsvpForm');
 const closeRsvpModalButton = document.querySelector('.close-rsvp-modal');
 const rsvpForm = document.getElementById('rsvpForm');
-const submitButton = rsvpForm.querySelector('.submit-button'); // Nuevo: Seleccionar el botón de envío
+// CORRECCIÓN: Seleccionar el botón de submit de forma más robusta
+const submitButton = rsvpForm.querySelector('button[type="submit"]'); 
 
 // Modal de error de capacidad
 const capacityErrorModal = document.getElementById('capacityErrorModal');
@@ -97,11 +98,11 @@ closeRsvpModalButton.addEventListener('click', () => {
 
 // Cerrar modals al hacer clic fuera
 window.addEventListener('click', (event) => {
-    if (event.target == rsvpModal) {
+    if (event.target === rsvpModal) { // Usar === para comparación estricta
         rsvpModal.style.display = 'none';
-    } else if (event.target == capacityErrorModal) {
+    } else if (event.target === capacityErrorModal) {
         capacityErrorModal.style.display = 'none';
-    } else if (event.target == successModal) { // Cierra el modal de éxito también
+    } else if (event.target === successModal) {
         successModal.style.display = 'none';
     }
 });
@@ -184,7 +185,7 @@ function openMapLink() {
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); // Detección más robusta
     const encodedAddress = encodeURIComponent(address);
     // Google Maps URL para desktop y móvil, que se adapta
-    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`; // API de Google Maps más moderna
     const wazeUrl = `https://waze.com/ul?q=${encodedAddress}&navigate=yes`;
 
     if (isMobile) {
